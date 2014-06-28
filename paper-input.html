@@ -24,7 +24,7 @@ Example:
 <link href="../polymer/polymer.html" rel="import">
 <link href="../core-input/core-input.html" rel="import">
 
-<polymer-element name="paper-input" extends="core-input" attributes="label floatingLabel maxRows error" on-down="{{downAction}}" on-up="{{upAction}}">
+<polymer-element name="paper-input" extends="core-input" attributes="type label floatingLabel maxRows error" on-down="{{downAction}}" on-up="{{upAction}}">
 
   <template>
 
@@ -74,6 +74,15 @@ Example:
     Polymer('paper-input', {
 
       /**
+       * This attribute will change the type of the input.
+       *
+       * @attribute type
+       * @type string
+       * @default 'text'
+       */
+       type: 'text',
+
+      /**
        * The label for this input. It normally appears as grey text inside
        * the text input and disappears once the user enters text.
        *
@@ -108,12 +117,19 @@ Example:
       focused: false,
       pressed: false,
 
+     setInputType: function() {
+        if(!this.type) this.$.input.type = this.type;
+      },
+
       attached: function() {
         if (this.multiline) {
           this.resizeInput();
           window.requestAnimationFrame(function() {
             this.$.underlineContainer.classList.add('animating');
           }.bind(this));
+        }
+        else {
+          this.setInputType();
         }
       },
 
