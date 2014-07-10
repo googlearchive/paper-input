@@ -9,12 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!--
 `paper-input` is a single- or multi-line text field where user can enter input.
-It can optionally have a label.
+It can optionally have a label.  `value` updates after the input is blurred.  `inputValue` binds to the pre-commited value of paper-input.
 
 Example:
 
     <paper-input label="Your Name"></paper-input>
     <paper-input multiline label="Enter multiple lines here"></paper-input>
+    <paper-input label="Your Name" value="{{committedname}}" inputValue="{{name}}" ></paper-input>
 
 @group Paper Elements
 @element paper-input
