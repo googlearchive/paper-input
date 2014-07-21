@@ -147,6 +147,10 @@ the focused and invalid states.
       focused: false,
       pressed: false,
 
+      observe: {
+        '$.input.validity.badInput': 'badInput'
+      },
+
       attached: function() {
         if (this.multiline) {
           this.resizeInput();
@@ -197,6 +201,12 @@ the focused and invalid states.
         }
       },
 
+      badInput: function() {
+        if (!this.floatingLabel) {
+          this.$.label.classList.toggle('hidden', this.inputValue || this.$.input.validity.badInput);
+        }
+      },
+
       inputValueChanged: function() {
         this.super();
 
@@ -210,7 +220,7 @@ the focused and invalid states.
         }
 
         if (!this.floatingLabel) {
-          this.$.label.classList.toggle('hidden', this.inputValue);
+          this.$.label.classList.toggle('hidden', this.inputValue || this.$.input.validity.badInput);
         }
 
         if (this.floatingLabel && !this.focused) {
