@@ -19,7 +19,7 @@
 :host /deep/ input,
 :host /deep/ textarea {
   font: inherit;
-  color: #000;
+  color: inherit;
   /* fit to the container for auto-resizing */
   position: absolute;
   top: 0;
