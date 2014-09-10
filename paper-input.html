@@ -56,6 +56,10 @@ the focused and invalid states.
   background-color: {{g.paperInput.invalidColor}};
 }
 
+:host #input{
+  overflow: hidden;
+}
+
 </core-style>
 
 <polymer-element name="paper-input" extends="core-input" layout vertical attributes="label floatingLabel maxRows error" on-transitionEnd="{{transitionEndAction}}" on-webkitTransitionEnd="{{transitionEndAction}}">
@@ -70,7 +74,7 @@ the focused and invalid states.
       <span id="floatedLabelText" class="label-text">{{label}}</span>
     </div>
 
-    <div flex auto relative on-down="{{downAction}}" on-up="{{upAction}}">
+    <div id="input" flex auto relative on-down="{{downAction}}" on-up="{{upAction}}">
 
       <div id="mirror" class="mirror-text" invisible aria-hidden="true"></div>
 
