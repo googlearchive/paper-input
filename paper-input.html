@@ -107,7 +107,7 @@ To add custom styling to only some elements, use these selectors:
     <link href="paper-input.css" rel="stylesheet">
     <core-style ref="paper-input"></core-style>
 
-    <div class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!inputValue && !(type === 'number' && !validity.valid) || labelAnimated}}">
+    <div class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!inputValue && inputValue !== 0 && !(type === 'number' && !validity.valid) || labelAnimated}}">
       <!-- needed for floating label animation measurement -->
       <span id="floatedLabelText" class="label-text">{{label}}</span>
     </div>
@@ -120,7 +120,7 @@ To add custom styling to only some elements, use these selectors:
 
       <div class="label" fit aria-hidden="true">
         <!-- needed for floating label animation measurement -->
-        <span id="labelText" class="label-text" invisible?="{{inputValue || !inputValue && type === 'number' && !validity.valid}}" animated?=
+        <span id="labelText" class="label-text" invisible?="{{inputValue || inputValue === 0 || !inputValue && type === 'number' && !validity.valid}}" animated?=
         "{{labelAnimated}}">{{label}}</span>
       </div>
 
@@ -222,7 +222,7 @@ To add custom styling to only some elements, use these selectors:
       get inputHasValue() {
         // if type = number, the input value is the empty string until a valid number
         // is entered so we must do some hacks here
-        return this.inputValue || (this.type === 'number' && !this.validity.valid);
+        return this.inputValue || this.inputValue === 0 || (this.type === 'number' && !this.validity.valid);
       },
 
       syncInputValueToMirror: function() {
