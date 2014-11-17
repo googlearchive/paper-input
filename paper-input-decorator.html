@@ -288,6 +288,15 @@ conflict with this element.
          * @default false
          */
         isInvalid: false,
+            
+        /**
+         * Checks for validity as the user types.
+         *
+         * @attribute doesAutoValidityCheck
+         * @type boolean
+         * @default false
+         */
+        doesAutoValidityCheck: false,
 
         /**
          * The message to display if the input value fails validation. If this
@@ -454,6 +463,9 @@ conflict with this element.
       },
 
       inputAction: function(e) {
+        if (this.doesAutoValidityCheck) {
+          this.isInvalid = !this.input.checkValidity();
+        }
         this.updateLabelVisibility(e.target.value);
       },
 
