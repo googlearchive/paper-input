@@ -61,7 +61,7 @@ Use `paper-input-decorator` if you would like to implement validation.
   </style>
 
   <paper-input-decorator id="decorator" label="{{label}}" floatingLabel="{{floatingLabel}}" value="{{value}}" disabled?="{{disabled}}">
-    <input is="core-input" value="{{value}}" committedValue="{{committedValue}}" on-change="{{changeAction}}" disabled?="{{disabled}}">
+    <input is="core-input" type="{{type}}" value="{{value}}" committedValue="{{committedValue}}" on-change="{{changeAction}}" disabled?="{{disabled}}">
   </paper-input-decorator>
 
 </template>
@@ -92,6 +92,16 @@ Use `paper-input-decorator` if you would like to implement validation.
       floatingLabel: false,
 
       /**
+       * The type for this input, which provides a hint for mobile
+       * keyboard layout (i.e. text, password, email, tel, url).
+       *
+       * @attribute type
+       * @type string
+       * @default 'text'
+       */
+      type: 'text',
+
+      /**
        * Set to true to style the element as disabled.
        *
        * @attribute disabled
@@ -106,6 +116,14 @@ Use `paper-input-decorator` if you would like to implement validation.
 
     },
 
+    typeChanged: function() {
+      //limit allowed types in spirit of original design intent
+      var allowedTypes = ['text', 'password', 'email', 'tel', 'url'];
+      if (allowedTypes.indexOf(this.type) == -1) {
+        this.type = 'text';
+      }
+    },
+    
     valueChanged: function() {
       this.$.decorator.updateLabelVisibility(this.value);
     },
