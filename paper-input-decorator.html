@@ -175,14 +175,14 @@ conflict with this element.
 <polymer-element name="paper-input-decorator" layout vertical
   on-transitionEnd="{{transitionEndAction}}" on-webkitTransitionEnd="{{transitionEndAction}}"
   on-input="{{inputAction}}"
-  on-down="{{downAction}}">
+  on-tap="{{tapAction}}">
 
   <template>
 
     <link href="paper-input-decorator.css" rel="stylesheet">
     <core-style ref="paper-input-decorator"></core-style>
 
-    <div class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!floatingLabelVisible || labelAnimated}}">
+    <div on-down="{{labelDownAction}}" class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!floatingLabelVisible || labelAnimated}}">
       <!-- needed for floating label animation measurement -->
       <span id="floatedLabelText" class="label-text">{{label}}</span>
     </div>
@@ -295,7 +295,6 @@ conflict with this element.
 
       ready: function() {
         // Delegate focus/blur events
-        Polymer.addEventListener(this, 'focus', this.focusAction.bind(this), true);
         Polymer.addEventListener(this, 'blur', this.blurAction.bind(this), true);
       },
 
@@ -404,10 +403,6 @@ conflict with this element.
         }
       },
 
-      focusAction: function() {
-        this.focused = true;
-      },
-
       blurAction: function(e) {
         this.focused = false;
       },
@@ -442,7 +437,12 @@ conflict with this element.
         this.updateLabelVisibility(e.target.value);
       },
 
-      downAction: function(e) {
+      labelDownAction: function(e) {
+        // Prevents bluring by clicking on the floating label
+        e.preventDefault();
+      },
+
+      tapAction: function(e) {
         if (this.disabled) {
           return;
         }
@@ -450,6 +450,8 @@ conflict with this element.
         if (this.focused) {
           return;
         }
+
+        this.focused = true;
 
         if (this.input) {
           this.input.focus();
