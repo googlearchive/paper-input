@@ -93,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       test('label is invisible if floating label and focused', function(done) {
         assert.ok(d3._labelVisible);
-        d3.focusAction();
+        d3.focused = true;
         flush(function() {
           assert.ok(!d3._labelVisible);
           done();
@@ -128,11 +128,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         i3.value = 'foobar';
         flush(function() {
           assert.ok(!d3._labelVisible);
-          fake.downOnNode(d1.shadowRoot.querySelector('.floated-label'));
-          flush(function() {
-            assert.strictEqual(window.ShadowDOMPolyfill ? wrap(document.activeElement) : document.activeElement, i1);
-            done();
-          })
+          var label = d1.shadowRoot.querySelector('.floated-label');
+          fake.downOnNode(label, function () {
+            fake.upOnNode(label, function () {
+              setTimeout(function () {
+                assert.strictEqual(window.ShadowDOMPolyfill ? wrap(document.activeElement) : document.activeElement, i1);
+                done();
+              }, 100);
+            });
+          });
         });
       });
 
