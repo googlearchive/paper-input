@@ -274,6 +274,15 @@ conflict with this element.
          * @default false
          */
         isInvalid: false,
+            
+        /**
+         * Checks for validity as the user types.
+         *
+         * @attribute doesAutoValidityCheck
+         * @type boolean
+         * @default false
+         */
+        doesAutoValidityCheck: false,
 
         /**
          * Set this property to true to validate the input as the user types.
@@ -484,6 +493,9 @@ conflict with this element.
       },
 
       inputAction: function(e) {
+        if (this.doesAutoValidityCheck) {
+          this.isInvalid = !this.input.checkValidity();
+        }
         this.updateLabelVisibility(e.target.value);
         if (this.autoValidate) {
           this.validate();
