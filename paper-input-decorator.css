@@ -103,7 +103,7 @@ polyfill-next-selector {
 }
 
 :host([disabled]) .underline {
-  border-bottom: 1px dashed #757575;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
 }
 
 .unfocused-underline {
