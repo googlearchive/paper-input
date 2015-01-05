@@ -35,14 +35,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <textarea id="textarea1"></textarea>
   </paper-autogrow-textarea>
 
-  <paper-autogrow-textarea id="autogrow2" rows="2" maxRows="4">
-    <textarea id="textarea2"></textarea>
-  </paper-autogrow-textarea>
+  <paper-autogrow-textarea id="autogrow2"></paper-autogrow-textarea>
+  <textarea id="textarea2"></textarea>
+
+  <polymer-element name="test-bind" noscript>
+    <template>
+      <paper-autogrow-textarea id="autogrow" target="{{$.textarea}}">
+      </paper-autogrow-textarea>
+      <textarea id="textarea"></textarea>
+    </template>
+  </polymer-element>
+  <test-bind id="testBind"></test-bind>
 
   <script>
 
     var a1 = document.getElementById('autogrow1');
     var t1 = document.getElementById('textarea1');
+    var a2 = document.getElementById('autogrow2');
+    var t2 = document.getElementById('textarea2');
+    var tB = document.getElementById('testBind');
 
     function dispatchInputEvent(target) {
       var e = new Event('input', {
@@ -58,10 +69,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     suite('basic', function() {
 
       teardown(function(done) {
-        t1.value = '';
-        dispatchInputEvent(t1);
-        a1.rows = 1;
-        a1.maxRows = 0;
+        var textareas = document.querySelectorAll('html /deep/ textarea');
+        for (var i = 0; i < textareas.length; i++) {
+          textareas[i].value = '';
+          dispatchInputEvent(textareas[i]);
+        }
+
+        var autogrows =
+            document.querySelectorAll('html /deep/ paper-autogrow-textarea');
+        for (var i = 0; i < autogrows.length; i++) {
+          autogrows[i].rows = 1;
+          autogrows[i].maxRows = 0;
+        }
+
+        a2.target = null;
 
         flush(function() {
           done();
@@ -134,6 +155,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var h2 = a1.offsetHeight;
           assert.ok(h2 > h1);
           assert.deepEqual(a1.getBoundingClientRect(), t1.getBoundingClientRect());
+          done();
+        });
+      });
+
+      test('can update size by calling update with no arguments', function() {
+        var h1 = a1.offsetHeight;
+        t1.value = 'one\ntwo\nthree';
+        a1.update();
+        assert.equal(a1.offsetHeight, h1 * 3);
+      });
+
+      test('can set the target programatically', function() {
+        var h1 = a2.offsetHeight;
+        a2.target = t2;
+        t2.value = 'one\ntwo';
+        a2.update();
+        assert.equal(a2.offsetHeight, h1 * 2);
+      });
+
+      test('can set the target with a binding', function() {
+        var a = tB.$.autogrow;
+        var t = tB.$.textarea;
+        var h1 = a.offsetHeight;
+        t.value = 'one\ntwo';
+        a.update();
+        assert.equal(a.offsetHeight, h1 * 2);
+      });
+
+      test('cleans up event listeners when detached', function(done) {
+        var h1 = a1.offsetHeight;
+        t1.value = 'one\ntwo\nthree';
+
+        // Remove it during the event dispatch.
+        a1.remove();
+        dispatchInputEvent(t1);
+        document.body.appendChild(a1);
+
+        flush(function() {
+          assert.equal(a1.offsetHeight, h1);
           done();
         });
       });

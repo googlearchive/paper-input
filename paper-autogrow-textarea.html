@@ -34,7 +34,7 @@ Example:
 
 <link href="../polymer/polymer.html" rel="import">
 
-<polymer-element name="paper-autogrow-textarea" on-input="{{inputAction}}">
+<polymer-element name="paper-autogrow-textarea">
 <template>
 
   <style>
@@ -111,6 +111,39 @@ Example:
 
     tokens: null,
 
+    _isAttached: false,
+
+    _boundUpdate: null,
+
+    _getBoundUpdate: function() {
+      this._boundUpdate = this._boundUpdate || this.update.bind(this);
+      return this._boundUpdate;
+    },
+
+    attached: function() {
+      this._isAttached = true;
+      if (!this.target) return;
+      this.target.addEventListener('input', this._getBoundUpdate());
+    },
+
+    domReady: function() {
+      if (this.target) return;
+      this.target = this.querySelector('textarea');
+    },
+
+    detached: function() {
+      this._isAttached = false;
+      if (!this.target) return;
+      this.target.removeEventListener('input', this._getBoundUpdate());
+    },
+
+    targetChanged: function(oldVal, newVal) {
+      this.update();
+      if (!this._isAttached) return;
+      if (oldVal) oldVal.removeEventListener('input', this._getBoundUpdate());
+      if (newVal) newVal.addEventListener('input', this._getBoundUpdate());
+    },
+
     observe: {
       rows: 'updateCached',
       maxRows: 'updateCached'
@@ -131,8 +164,8 @@ Example:
       return _tokens.join('<br>') + '&nbsp;';
     },
 
-    valueForMirror: function(input) {
-      this.tokens = (input && input.value) ? input.value.replace(/&/gm, '&amp;').replace(/"/gm, '&quot;').replace(/'/gm, '&#39;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;').split('\n') : [''];
+    valueForMirror: function() {
+      this.tokens = (this.target && this.target.value) ? this.target.value.replace(/&/gm, '&amp;').replace(/"/gm, '&quot;').replace(/'/gm, '&#39;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;').split('\n') : [''];
       return this.constrain(this.tokens);
     },
 
@@ -142,18 +175,13 @@ Example:
      * is updated imperatively.
      *
      * @method update
-     * @param Element The input
      */
-    update: function(input) {
-      this.$.mirror.innerHTML = this.valueForMirror(input);
+    update: function() {
+      this.$.mirror.innerHTML = this.valueForMirror();
     },
 
     updateCached: function() {
       this.$.mirror.innerHTML = this.constrain(this.tokens);
-    },
-
-    inputAction: function(e) {
-      this.update(e.target);
     }
 
   });
