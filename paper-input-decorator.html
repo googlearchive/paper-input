@@ -204,9 +204,9 @@ conflict with this element.
       <div id="focusedUnderline" class="focused-underline" fit invisible?="{{!underlineVisible}}" animated?="{{underlineAnimated}}"></div>
     </div>
 
-    <div class="error" layout horizontal center hidden?="{{!isInvalid}}">
-      <div class="error-text" flex auto role="alert" aria-hidden="{{!isInvalid}}">{{error}}</div>
-      <core-icon class="error-icon" icon="warning"></core-icon>
+    <div class="error" layout horizontal center hidden?="{{!hasError}}">
+      <div class="error-text" flex auto role="alert" invisible?="{{!isInvalid}}" aria-hidden="{{!isInvalid}}">{{error}}</div>
+      <core-icon class="error-icon" invisible?="{{!isInvalid}}" icon="warning"></core-icon>
     </div>
 
   </template>
@@ -295,6 +295,17 @@ conflict with this element.
          * @type string
          */
         error: '',
+
+        /**
+         * Set this if you will use an error message for validation.
+         * If set, the error field will not collapse, which means content next to and
+         * below will not shift on changing validation. If false and content is invalid,
+         * underline turns red, but no error is displayed.
+         *
+         * @attribute hasError
+         * @type boolean
+         */
+        hasError: false,
 
         focused: {value: false, reflect: true}
 
