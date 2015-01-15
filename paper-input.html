@@ -129,6 +129,15 @@ Use `paper-input-decorator` if you would like to implement validation.
       this.$.input.focus();
     },
 
+    /**
+     * Sets the selection range on `input`.
+     *
+     * @method setSelectionRange
+     */
+    setSelectionRange: function(selectionStart, selectionEnd) {
+      this.$.input.setSelectionRange(selectionStart, selectionEnd);
+    },
+
     valueChanged: function() {
       this.$.decorator.updateLabelVisibility(this.value);
     },
