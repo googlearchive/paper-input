@@ -111,7 +111,17 @@
 
 </head>
 <body unresolved>
-
+  <section>
+    <div>Raised</div>
+    <paper-input label="label" raised></paper-input>
+    <br />
+    <paper-input label="floating label does not work with raised input" raised floatingLabel></paper-input>
+    <br />
+    <paper-input label="disabled" raised disabled></paper-input>
+    <paper-input-decorator label="required" error="input is required!" raised autoValidate>
+      <input is="core-input" required>
+    </paper-input-decorator>
+  </section>
   <section>
 
     <div>Standalone</div>

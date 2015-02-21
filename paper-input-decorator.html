@@ -128,6 +128,7 @@ conflict with this element.
 <link href="../core-icons/core-icons.html" rel="import">
 <link href="../core-input/core-input.html" rel="import">
 <link href="../core-style/core-style.html" rel="import">
+<link href="../paper-shadow/paper-shadow.html" rel="import">
 
 <core-style id="paper-input-decorator">
 
@@ -183,38 +184,70 @@ conflict with this element.
 
     <link href="paper-input-decorator.css" rel="stylesheet">
     <core-style ref="paper-input-decorator"></core-style>
+    <template if="{{!raised}}">
+      <div class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!floatingLabelVisible || labelAnimated}}">
+        <!-- needed for floating label animation measurement -->
+        <span id="floatedLabelText" class="label-text">{{label}}</span>
+      </div>
+    </template>
 
-    <div class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!floatingLabelVisible || labelAnimated}}">
-      <!-- needed for floating label animation measurement -->
-      <span id="floatedLabelText" class="label-text">{{label}}</span>
-    </div>
-
-    <div class="input-body" flex auto relative>
-
+    <div class="input-body" flex auto relative layout horizontal?="{{raised}}">
+      <template if="{{raised && !disabled}}">
+        <paper-shadow fit></paper-shadow>
+      </template>
       <div class="label" fit invisible aria-hidden="true">
         <!-- needed for floating label animation measurement -->
         <span id="labelText" class="label-text" invisible?="{{!_labelVisible}}" animated?="{{labelAnimated}}">{{label}}</span>
       </div>
-
+      
       <content select="*:not(.counter)"></content>
-
+      <template if="{{raised}}">
+        <div class="error" self-center layout horizontal center hidden?="{{!isInvalid}}">
+          <div class="error-text" flex auto role="alert" aria-hidden="{{!isInvalid}}">{{error}}</div>
+          <core-icon id="errorIcon" class="error-icon" icon="warning"></core-icon>
+        </div>
+      </template>
     </div>
-
-    <div id="underline" class="underline" relative>
-      <div class="unfocused-underline" fit invisible?="{{disabled}}"></div>
-      <div id="focusedUnderline" class="focused-underline" fit invisible?="{{!underlineVisible}}" animated?="{{underlineAnimated}}"></div>
-    </div>
-
-    <div class="footer" layout horizontal end-justified>
-      <div class="error" flex layout horizontal center hidden?="{{!isInvalid}}">
-        <div class="error-text" flex auto role="alert" aria-hidden="{{!isInvalid}}">{{error}}</div>
-        <core-icon id="errorIcon" class="error-icon" icon="warning"></core-icon>
+    <template if="{{!raised}}">
+      <div id="underline" class="underline" relative>
+        <div class="unfocused-underline" fit invisible?="{{disabled}}"></div>
+        <div id="focusedUnderline" class="focused-underline" fit invisible?="{{!underlineVisible}}" animated?="{{underlineAnimated}}"></div>
       </div>
-      <div aria-hidden="true">
-        <content select=".counter"></content>
+      
+      <div class="footer" layout horizontal end-justified>
+        <div class="error" flex layout horizontal center hidden?="{{!isInvalid}}">
+          <div class="error-text" flex auto role="alert" aria-hidden="{{!isInvalid}}">{{error}}</div>
+          <core-icon id="errorIcon" class="error-icon" icon="warning"></core-icon>
+        </div>
+        <div aria-hidden="true">
+          <content select=".counter"></content>
+        </div>
       </div>
-    </div>
-
+    </template>
+    
+    <template if="{{raised}}">
+      <style>
+        .input-body {
+          background-color:white;
+          padding:10px;
+          border-radius:2px;
+        }
+        .input-body paper-shadow {
+          border-radius:inherit;
+        }
+        
+        .error-text {
+          padding:0;
+        }
+      </style>
+      <template if="{{disabled}}">
+        <style>
+          .input-body {
+            background-color:#eee;
+          }
+        </style>
+      </template>
+    </template>
   </template>
 
   <script>
@@ -291,6 +324,15 @@ conflict with this element.
          * @default false
          */
         autoValidate: false,
+        /**
+         * Set this property to true to add a Material Design drop shadow to the input.
+         * 
+         *
+         * @attribute raised
+         * @type boolean
+         * @default false
+         */
+        raised: false,
 
         /**
          * The message to display if the input value fails validation. If this
