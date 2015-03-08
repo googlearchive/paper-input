@@ -18,8 +18,13 @@
   <script src="../webcomponentsjs/webcomponents.js"></script>
 
   <link href="../font-roboto/roboto.html" rel="import">
+  <link href="../paper-dropdown-menu/paper-dropdown-menu.html" rel="import">
+  <link href="../paper-dropdown/paper-dropdown.html" rel="import">
+  <link href="../paper-item/paper-item.html" rel="import">
+  <link href="../core-menu/core-menu.html" rel="import">
   <link href="paper-autogrow-textarea.html" rel="import">
   <link href="paper-input-decorator.html" rel="import">
+  <link href="paper-dropdown-decorator.html" rel="import">
   <link href="paper-input.html" rel="import">
   <link href="paper-char-counter.html" rel="import">
 
@@ -162,6 +167,20 @@
       </paper-autogrow-textarea>
     </paper-input-decorator>
 
+    <br>
+
+    <paper-dropdown-decorator label="with dropdown" floatingLabel>
+      <paper-dropdown-menu>
+        <paper-dropdown class="dropdown">
+          <core-menu class="menu">
+            <paper-item>Croissant</paper-item>
+            <paper-item>Donut</paper-item>
+            <paper-item>Financier</paper-item>
+            <paper-item>Madeleine</paper-item>
+          </core-menu>
+        </paper-dropdown>
+      </paper-dropdown-menu>
+    </paper-dropdown-decorator>
   </section>
 
   <section>
