@@ -1,0 +1,72 @@
+<link href="../polymer/polymer.html" rel="import">
+<link href="paper-decorator-base.html" rel="import">
+
+<style shimshadowdom>
+  html /deep/ paper-dropdown-decorator paper-dropdown-menu {
+    border-bottom: none;
+  }
+</style>
+
+<polymer-element name="paper-dropdown-decorator" extends="paper-decorator-base">
+  <script>
+    Polymer({
+      inputNames: 'paper-dropdown-menu',
+
+      attached: function() {
+        this.super();
+        this.input.addEventListener('core-select', (function(_this) {
+          return function(e) {
+            var item;
+            item = e.detail.item;
+            _this.update(item.label || item.textContent);
+          };
+        })(this));
+
+        if (this.dropdownLabel == null) {
+          this.dropdownLabel = this.input.label;
+        }
+
+        this.input.label = this.label;
+      },
+
+      tapAction: function(e) {
+        if (this.disabled) {
+          return;
+        }
+
+        if (typeof input !== "undefined" && input !== null) {
+          input.label = this.dropdownLabel;
+        }
+
+        if (this.focused) {
+          return;
+        }
+
+        if (typeof input !== "undefined" && input !== null) {
+          input.opened = true;
+        }
+
+      },
+
+      transitionEndAction: function() {
+        this.super();
+        if (this._labelVisible) {
+          this.input.label = this.label;
+        }
+      },
+
+      update: function(value) {
+        var _ref;
+        this.input.value = value;
+        this.input.selectedItemLabel = this.input.value;
+        if (this.input.value) {
+          if ((_ref = this.input.$.label) != null) {
+            _ref.classList.add('selectedItem');
+          }
+        }
+
+        this.updateLabelVisibility(value);
+      }
+    });
+  </script>
+</polymer-element>
