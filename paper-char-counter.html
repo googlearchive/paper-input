@@ -94,13 +94,27 @@ Theming
     /* True if the number of characters in the input exceeds _maxChars */
     _isCounterInvalid: false,
 
-    ready: function() {
-      if (!this.target)
-        return;
-      var targetElement = document.getElementById(this.target);
-      this._maxChars = targetElement.maxLength;
-      targetElement.addEventListener('input', this.inputAction.bind(this));
-		},
+    _targetElement: null,
+
+    ready: function () {
+        if (!this.target)
+            return;
+
+        this._initTarget(document.getElementById(this.target));
+    },
+
+    _initTarget: function (targetElement) {
+        this._targetElement = targetElement;
+
+        this._maxChars = this._targetElement.maxLength;
+        this._targetElement.addEventListener('input', this.inputAction.bind(this));
+    },
+
+    targetChanged: function (o, n) {
+        if (n && !this._targetElement) {
+            this._initTarget(typeof n == 'string' ? document.getElementById(n) : n);
+        }
+    },
 
     inputAction: function(e) {
       this._charCount = e.target.value.length;
