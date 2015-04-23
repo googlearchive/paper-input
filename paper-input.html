@@ -60,7 +60,7 @@ Use `paper-input-decorator` if you would like to implement validation.
     }
   </style>
 
-  <paper-input-decorator id="decorator" label="{{label}}" floatingLabel="{{floatingLabel}}" value="{{value}}" disabled?="{{disabled}}">
+  <paper-input-decorator id="decorator" label="{{label}}" floatingLabel="{{floatingLabel}}" value="{{value}}" disabled?="{{disabled}}" raised="{{raised}}">
     <input is="core-input" id="input" value="{{value}}" committedValue="{{committedValue}}" on-change="{{changeAction}}" disabled?="{{disabled}}">
   </paper-input-decorator>
 
@@ -116,7 +116,16 @@ Use `paper-input-decorator` if you would like to implement validation.
        * @type String
        * @default ''
        */
-      committedValue: ''
+      committedValue: '',
+      /**
+         * Set this property to true to add a Material Design drop shadow to the input.
+         * 
+         *
+         * @attribute raised
+         * @type boolean
+         * @default false
+         */
+      raised: false
 
     },
 
