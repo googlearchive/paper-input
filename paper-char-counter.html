@@ -103,7 +103,8 @@ Theming
 		},
 
     inputAction: function(e) {
-      this._charCount = e.target.value.length;
+      // this._charCount = e.target.value.length;
+      this._charCount = e.target.value.replace(/(\r\n|\n|\r)/g, '--').length;
       this._isCounterInvalid = this._maxChars && this._charCount >= this._maxChars;
     },
 
