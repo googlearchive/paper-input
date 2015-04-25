@@ -132,7 +132,7 @@ Example:
     },
 
     valueForMirror: function(input) {
-      this.tokens = (input && input.value) ? input.value.replace(/&/gm, '&amp;').replace(/"/gm, '&quot;').replace(/'/gm, '&#39;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;').split('\n') : [''];
+      this.tokens = (input && input.value) ? input.value.replace(/ /gm, '&nbsp;').replace(/&/gm, '&amp;').replace(/"/gm, '&quot;').replace(/'/gm, '&#39;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;').split('\n') : [''];
       return this.constrain(this.tokens);
     },
 
