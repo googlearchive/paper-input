@@ -29,6 +29,7 @@ Theming
 `paper-input-decorator` uses `core-style` for global theming. The following options are available:
 
 - `CoreStyle.g.paperInput.labelColor` - The inline label, floating label, error message and error icon color when the input does not have focus.
+- `CoreStyle.g.paperInput.unfocusedColor` - The underline color when the input does not have focus.
 - `CoreStyle.g.paperInput.focusedColor` - The floating label and the underline color when the input has focus.
 - `CoreStyle.g.paperInput.invalidColor` - The error message, the error icon, the floating label and the underline's color when the input is invalid and has focus.
 
@@ -149,7 +150,7 @@ conflict with this element.
 }
 
 .unfocused-underline {
-  background-color: {{g.paperInput.labelColor}};
+  background-color: {{g.paperInput.unfocusedColor}};
 }
 
 :host([focused]) .floated-label .label-text {
@@ -223,7 +224,8 @@ conflict with this element.
 
     var paperInput = CoreStyle.g.paperInput = CoreStyle.g.paperInput || {};
 
-    paperInput.labelColor = '#757575';
+    paperInput.labelColor = 'rgba(0, 0, 0, 0.26)';
+    paperInput.unfocusedColor = 'rgba(0, 0, 0, 0.12)';
     paperInput.focusedColor = '#4059a9';
     paperInput.invalidColor = '#d34336';
 
