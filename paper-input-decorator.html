@@ -23,6 +23,8 @@ Example:
         <textarea></textarea>
     </paper-input-decorator>
 
+If there is no input or textarea child element, paper-input-decorator will search the shadow dom for the input or textarea.
+
 Theming
 -------
 
@@ -318,10 +320,10 @@ conflict with this element.
       },
 
       attached: function() {
-        this.input = this.querySelector('input,textarea');
+        this.input = this.querySelector('input, textarea, #input /deep/ input, #input /deep/ textarea');
 
         this.mo = new MutationObserver(function() {
-          this.input = this.querySelector('input,textarea');
+          this.input = this.querySelector('input, textarea, #input /deep/ input, #input /deep/ textarea');
         }.bind(this));
         this.mo.observe(this, {childList: true});
       },
